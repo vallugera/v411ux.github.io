@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sergio Vallugera · IT Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --bg2: #0d1117;
+    --surface: #111820;
+    --border: #1e2d3d;
+    --accent: #00d4ff;
+    --accent2: #0066ff;
+    --accent3: #7c3aed;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* Hero */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,102,255,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
+    bottom: 0; left: 200px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--mono);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+
+  .hero-name span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.6s forwards;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    padding: 0.75rem 1.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  /* Sections */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text {
+    font-size: 1rem;
+    color: #94a3b8;
+    line-height: 1.9;
+  }
+
+  .about-text p + p { margin-top: 1rem; }
+
+  .about-text strong { color: var(--text); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 0.3rem;
+  }
+
+  /* Experience */
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s;
+  }
+
+  .exp-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .exp-left {
+    padding-top: 0.2rem;
+  }
+
+  .exp-dates {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .exp-company {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-type {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .exp-role {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .exp-desc {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .exp-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: var(--accent);
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .skill-group {
+    background: var(--surface);
+    padding: 2rem;
+  }
+
+  .skill-group-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(30,45,61,0.5);
+  }
+
+  .skill-name {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+
+  .skill-bar {
+    width: 80px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 2px;
+    width: 0;
+    transition: width 1s ease;
+  }
+
+  /* Education */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .edu-item {
+    background: var(--surface);
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+
+  .edu-item:hover {
+    background: #161f2a;
+  }
+
+  .edu-year {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+
+  .edu-degree {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .edu-school {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+
+  .edu-badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    background: rgba(124,58,237,0.1);
+    border: 1px solid rgba(124,58,237,0.3);
+    color: #a78bfa;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* Contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .contact-text {
+    font-size: 1rem;
+    color: #94a3b8;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .contact-link-icon {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .contact-link-text {
+    font-size: 0.85rem;
+  }
+
+  /* Footer */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Cursor dot */
+  .cursor {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s;
+    mix-blend-mode: screen;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 7rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .skills-grid, .edu-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SV // PORTFOLIO</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <p class="hero-tag">// IT Specialist · Martorell, España</p>
+    <h1 class="hero-name">Sergio<br><span>Vallugera</span></h1>
+    <p class="hero-role">Data Product Owner · Hyperautomation & Low Code · IT Project Management · Cybersecurity</p>
+    <div class="hero-pills">
+      <span class="pill">Power Platform</span>
+      <span class="pill">Power Apps</span>
+      <span class="pill">Power Automate</span>
+      <span class="pill">Power BI</span>
+      <span class="pill">Python</span>
+      <span class="pill">Linux</span>
+      <span class="pill">Docker</span>
+      <span class="pill">Jira</span>
+      <span class="pill">Cybersecurity</span>
+      <span class="pill">AI Act</span>
+      <span class="pill">Data Governance</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Contactar</a>
+      <a href="CV_Sergio_DataProductOwner.docx" download class="btn btn-outline">Descargar CV</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">Sobre mí</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Profesional con <strong>22 años en SEAT S.A. (Grupo Volkswagen)</strong> con trayectoria transversal entre producción industrial, IT y digitalización de procesos.</p>
+      <p>Especializado en <strong>gestión de proyectos tecnológicos end-to-end</strong>, automatización con Power Platform e Hyperautomation, y actuación como nexo entre negocio e IT.</p>
+      <p>Actualmente cursando un <strong>Máster en Ciberseguridad TIC</strong> (UOC + Jesuitas Educación), con enfoque en seguridad ofensiva/defensiva, SIEM, SOC y marcos regulatorios como AI Act y Data Act.</p>
+      <p>Mi objetivo: liderar iniciativas de <strong>Data, IA y automatización</strong> que generen valor real en entornos industriales y corporativos.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <span class="stat-num">22</span>
+        <span class="stat-label">Años en SEAT</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100+</span>
+        <span class="stat-label">Personas formadas</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">30%</span>
+        <span class="stat-label">Reducción tiempos automatización</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3+</span>
+        <span class="stat-label">Certificaciones activas</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Experiencia</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-left">
+      <div class="exp-dates">2023 — ACTUAL</div>
+      <div class="exp-company">SEAT S.A. · Grupo VW</div>
+      <div class="exp-type">Full-time</div>
+    </div>
+    <div class="exp-right">
+      <div class="exp-role">IT Process & Digitalization Specialist</div>
+      <div class="exp-desc">
+        Nexo entre áreas de negocio (Producción, Finanzas, RRHH) y equipos IT para identificar, priorizar y ejecutar iniciativas de digitalización. Gestión end-to-end de proyectos tecnológicos con reporting de portfolio y KPIs. Desarrollo de soluciones Low Code con Power Apps, Power Automate y Power BI. Formación de más de 100 empleados en herramientas digitales y cultura Citizen Developer.
+      </div>
+      <div class="exp-tags">
+        <span class="tag">Power Apps</span>
+        <span class="tag">Power Automate</span>
+        <span class="tag">Power BI</span>
+        <span class="tag">IT Project Management</span>
+        <span class="tag">Stakeholder Management</span>
+        <span class="tag">Low-Code</span>
+        <span class="tag">KPI Dashboards</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-left">
+      <div class="exp-dates">ABR — SEP 2024</div>
+      <div class="exp-company">SEAT S.A. · Finanzas IT</div>
+      <div class="exp-type">Prácticas</div>
+    </div>
+    <div class="exp-right">
+      <div class="exp-role">Systems Administration Intern</div>
+      <div class="exp-desc">
+        Automatización de procesos financieros con Python, PowerShell y Bash (reducción del 30% en tiempos de ejecución). Administración de entornos Linux/Windows Server, Docker y Active Directory. Seguimiento de tareas con Jira y Confluence. Implementación de políticas de seguridad IT y hardening de sistemas corporativos.
+      </div>
+      <div class="exp-tags">
+        <span class="tag">Python</span>
+        <span class="tag">PowerShell</span>
+        <span class="tag">Bash</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Active Directory</span>
+        <span class="tag">Jira</span>
+        <span class="tag">Confluence</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-left">
+      <div class="exp-dates">2002 — 2023</div>
+      <div class="exp-company">SEAT S.A. · Grupo VW</div>
+      <div class="exp-type">Full-time</div>
+    </div>
+    <div class="exp-right">
+      <div class="exp-role">Especialista en Procesos de Producción</div>
+      <div class="exp-desc">
+        21 años en entorno industrial automotive con evolución progresiva hacia digitalización. Desarrollo de dashboards Power BI para análisis predictivo, automatización de reportes y liderazgo de iniciativas de mejora continua con impacto directo en eficiencia operativa.
+      </div>
+      <div class="exp-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">Lean Manufacturing</span>
+        <span class="tag">Industria 4.0</span>
+        <span class="tag">Mejora Continua</span>
+        <span class="tag">Digitalización</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Habilidades</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">// Automatización & Low-Code</div>
+      <div class="skill-item"><span class="skill-name">Power Apps</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Power Automate</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Power BI</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+      <div class="skill-item"><span class="skill-name">PowerShell</span><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Bash</span><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">// Infraestructura & Sistemas</div>
+      <div class="skill-item"><span class="skill-name">Linux / Windows Server</span><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Active Directory</span><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Docker</span><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Networking</span><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Hardening / IT Security</span><div class="skill-bar"><div class="skill-fill" data-w="72"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Jira / Confluence</span><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">// Gestión & Data</div>
+      <div class="skill-item"><span class="skill-name">IT Project Management</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Stakeholder Management</span><div class="skill-bar"><div class="skill-fill" data-w="85"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Data Governance</span><div class="skill-bar"><div class="skill-fill" data-w="60"></div></div></div>
+      <div class="skill-item"><span class="skill-name">KPI / Reporting</span><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+      <div class="skill-item"><span class="skill-name">Agile / Scrum</span><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-item"><span class="skill-name">AI Act / Data Act</span><div class="skill-bar"><div class="skill-fill" data-w="55"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">Formación</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-item">
+      <div class="edu-year">2025 — 2026</div>
+      <div class="edu-degree">Máster en Ciberseguridad TIC</div>
+      <div class="edu-school">UOC + Jesuitas Educación</div>
+      <span class="edu-badge">En curso</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2024</div>
+      <div class="edu-degree">T.S. Administración de Sistemas Informáticos en Red</div>
+      <div class="edu-school">Institut Obert de Catalunya (IOC)</div>
+      <span class="edu-badge">Nota: 7.16</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Dic 2024</div>
+      <div class="edu-degree">Power Apps & Power Automate</div>
+      <div class="edu-school">AGLAIA Consulting · ID: CUR-25274</div>
+      <span class="edu-badge">Certificado</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">2025</div>
+      <div class="edu-degree">Inglés B1 Certificado</div>
+      <div class="edu-school">B2 en curso</div>
+      <span class="edu-badge">Certificado</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">SEAT Interno</div>
+      <div class="edu-degree">Citizen Developer Program · Power Platform</div>
+      <div class="edu-school">SEAT S.A.</div>
+      <span class="edu-badge">Completado</span>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">SEAT Interno</div>
+      <div class="edu-degree">Cultura Digital y Automatización de Procesos</div>
+      <div class="edu-school">SEAT S.A.</div>
+      <span class="edu-badge">Completado</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">Contacto</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-text">
+      <p>¿Tienes un proyecto de digitalización, automatización o gestión de datos en mente? Hablemos.</p>
+      <br>
+      <p>Disponible para oportunidades en el ámbito de Data, IA, Hyperautomation y gestión de proyectos IT dentro del Grupo Volkswagen y más allá.</p>
+    </div>
+    <div class="contact-links">
+      <a href="tel:+34686857241" class="contact-link">
+        <span class="contact-link-icon">TEL://</span>
+        <span class="contact-link-text">+34 686 857 241</span>
+      </a>
+      <a href="mailto:vallugera@gmail.com" class="contact-link">
+        <span class="contact-link-icon">MAIL://</span>
+        <span class="contact-link-text">vallugera@gmail.com</span>
+      </a>
+      <a href="https://www.linkedin.com/in/sergio-vallugera-munguia-346000308/" target="_blank" class="contact-link">
+        <span class="contact-link-icon">IN://</span>
+        <span class="contact-link-text">linkedin.com/in/sergio-vallugera-munguia</span>
+      </a>
+      <a href="https://v411ux.github.io" target="_blank" class="contact-link">
+        <span class="contact-link-icon">WEB://</span>
+        <span class="contact-link-text">v411ux.github.io</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 · Sergio Vallugera Munguia</p>
+  <p>SEAT S.A. · Martorell, España</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 3 + 'px';
+    cursor.style.top = e.clientY - 3 + 'px';
+  });
+
+  // Scroll reveal for experience items
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.exp-item').forEach(el => observer.observe(el));
+
+  // Skill bars animation
+  const skillObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.skills-grid').forEach(el => skillObserver.observe(el));
+</script>
+</body>
+</html>
