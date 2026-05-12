@@ -1,4 +1,3 @@
-cat > /var/www/html/index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,6 +7,7 @@ cat > /var/www/html/index.html <<'EOF'
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://unpkg.com/globe.gl"></script>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -308,20 +308,14 @@ h1 span{
   inset:-20px;
   background:radial-gradient(circle at 54% 48%,rgba(56,189,248,.14),transparent 54%);
 }
-.globe-img{
+#globe-viz{
   position:absolute;
-  right:-58px;
-  top:18px;
-  width:390px;
-  height:390px;
-  object-fit:contain;
+  right:-40px;
+  top:10px;
+  width:360px;
+  height:360px;
   opacity:.96;
   filter:drop-shadow(0 0 24px rgba(56,189,248,.26));
-  animation:float 6s ease-in-out infinite;
-}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-9px)}
 }
 .stats{
   display:grid;
@@ -457,7 +451,7 @@ h1 span{
 @media(max-width:1100px){
   .nav-links{display:none}
   .hero-grid{grid-template-columns:1fr}
-  .globe-img{right:0}
+  #globe-viz{right:0}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:720px){
@@ -547,7 +541,7 @@ h1 span{
             </div>
 
             <div class="globe-box">
-              <img class="globe-img" src="assets/globe.webp" alt="Digital world globe">
+              <div id="globe-viz"></div>
             </div>
           </div>
         </div>
@@ -595,8 +589,15 @@ h1 span{
   <section class="section" id="blog"><h2>Blog</h2><p>Sección pendiente de completar.</p></section>
 
 </div>
+
+<script>
+const world = Globe()(document.getElementById('globe-viz'))
+  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+  .showAtmosphere(true)
+  .atmosphereColor('#35c8ff')
+  .autoRotate(true)
+  .autoRotateSpeed(0.4);
+</script>
+
 </body>
 </html>
-EOF
-
-nginx -t && systemctl reload nginx
