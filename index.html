@@ -301,21 +301,27 @@ h1 span{
 .globe-box{
   position:relative;
   overflow:hidden;
+  width:100%;
+  height:100%;
 }
 .globe-box:before{
   content:"";
   position:absolute;
   inset:-20px;
   background:radial-gradient(circle at 54% 48%,rgba(56,189,248,.14),transparent 54%);
+  z-index:1;
 }
 #globe-viz{
-  position:absolute;
-  right:-40px;
-  top:10px;
-  width:360px;
-  height:360px;
-  opacity:.96;
-  filter:drop-shadow(0 0 24px rgba(56,189,248,.26));
+  width:100%;
+  height:100%;
+  min-height:370px;
+}
+#globe-viz canvas{
+  display:block;
+}
+#globe-viz .scene-container{
+  width:100%!important;
+  height:100%!important;
 }
 .stats{
   display:grid;
@@ -451,7 +457,6 @@ h1 span{
 @media(max-width:1100px){
   .nav-links{display:none}
   .hero-grid{grid-template-columns:1fr}
-  #globe-viz{right:0}
   .stats{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:720px){
@@ -591,12 +596,31 @@ h1 span{
 </div>
 
 <script>
-const world = Globe()(document.getElementById('globe-viz'))
-  .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
-  .showAtmosphere(true)
-  .atmosphereColor('#35c8ff')
-  .autoRotate(true)
-  .autoRotateSpeed(0.4);
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('globe-viz');
+  if (!container || typeof Globe === 'undefined') {
+    console.warn('Globe.gl no cargó. Verifica tu conexión o CDN.');
+    return;
+  }
+  
+  const world = Globe()(container)
+    .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+    .backgroundImageUrl('https://unpkg.com/three-globe/example/img/night-sky.png')
+    .showAtmosphere(true)
+    .atmosphereColor('#35c8ff')
+    .atmosphereAltitude(0.15)
+    .autoRotate(true)
+    .autoRotateSpeed(0.4)
+    .pointOfView({ altitude: 2.5 })
+    .width(container.clientWidth)
+    .height(container.clientHeight);
+    
+  // Responsive
+  window.addEventListener('resize', () => {
+    world.width(container.clientWidth);
+    world.height(container.clientHeight);
+  });
+});
 </script>
 
 </body>
